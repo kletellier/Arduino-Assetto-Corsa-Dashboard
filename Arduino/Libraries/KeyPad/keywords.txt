@@ -1,0 +1,15 @@
+KeyPad              KEYWORD1
+GetButton           KEYWORD2
+Clear               KEYWORD2
+SetCursor           KEYWORD2
+DrawProgressBar     KEYWORD2
+Display             KEYWORD2
+ChangeBackLight     KEYWORD2
+ClearLine           KEYWORD2
+SpecialChar         KEYWORD2
+ButtonNone          LITERAL1
+ButtonRight         LITERAL1
+ButtonUp            LITERAL1
+ButtonDown          LITERAL1
+ButtonLeft          LITERAL1
+ButtonSelect        LITERAL1

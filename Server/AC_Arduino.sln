@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC_Arduino", "AC_Arduino\AC_Arduino.csproj", "{28A71775-0532-4B05-B42F-455793D4A281}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC_Test", "AC_Test\AC_Test.csproj", "{C8A7B78C-9BB2-4A91-BCA2-6AF6F0184FCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28A71775-0532-4B05-B42F-455793D4A281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28A71775-0532-4B05-B42F-455793D4A281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28A71775-0532-4B05-B42F-455793D4A281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28A71775-0532-4B05-B42F-455793D4A281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8A7B78C-9BB2-4A91-BCA2-6AF6F0184FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8A7B78C-9BB2-4A91-BCA2-6AF6F0184FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8A7B78C-9BB2-4A91-BCA2-6AF6F0184FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8A7B78C-9BB2-4A91-BCA2-6AF6F0184FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5026079-E4C1-4CDB-A744-6E8E2E6CEFD7}
+	EndGlobalSection
+EndGlobal
