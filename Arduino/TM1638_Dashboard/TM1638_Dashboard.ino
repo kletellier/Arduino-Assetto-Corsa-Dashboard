@@ -388,7 +388,8 @@ void DisplayMode5()
 void DisplayMode6()
 {
   // display PerformanceMeter
-  tm.displayText(stDisplay6.PerformanceMeter.c_str());
+  String sDisplay = padLeft(stDisplay6.PerformanceMeter," ",8);
+  tm.displayText(sDisplay.c_str());
 }
 
 void DisplayAt(String pDisplay,int pPos, int pLen)
