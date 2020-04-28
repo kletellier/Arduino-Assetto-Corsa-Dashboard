@@ -56,7 +56,11 @@
     <Compile Include="StaticInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ACCSharedMemoryDocumentationV1.3.10.pdf" />
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

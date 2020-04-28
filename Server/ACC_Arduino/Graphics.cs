@@ -153,5 +153,21 @@ namespace AssettoCorsaSharedMemory
         public int DriverStintTotalTimeLeft;
         public int DriverStintTimeLeft;
         public int RainTyres;
+        int SessionIndex;
+        public float UsedFuel;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public String deltaLapTime;
+        public int iDeltaLapTime;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public String estimatedLapTime;
+        public int iEstimatedLapTime;
+        public int isDeltaPositive;
+        public int iSplit;
+        public int isValidLap;
+        public float FuelEstimatedLaps;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public String trackStatus;
+        public int MissingMandatoryPits;
+        public float Clock;
     }
 }

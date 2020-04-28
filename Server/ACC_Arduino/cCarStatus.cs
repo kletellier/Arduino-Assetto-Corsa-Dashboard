@@ -118,17 +118,17 @@ namespace AC_Arduino
 
         public int BestTime
         {
-            get { return m_Graphics.iBestTime; }
+            get { return m_Graphics.iBestTime < int.MaxValue ? m_Graphics.iBestTime: 0; }
         }
 
         public int LastTime
         {
-            get { return m_Graphics.iLastTime; }
+            get { return m_Graphics.iLastTime < int.MaxValue ? m_Graphics.iLastTime : 0; }
         }
 
         public int CurrentTime
         {
-            get { return m_Graphics.iCurrentTime; }
+            get { return m_Graphics.iCurrentTime < int.MaxValue ? m_Graphics.iCurrentTime:0; }
         }
 
         public int CurrentPosition
@@ -150,7 +150,9 @@ namespace AC_Arduino
 
         public float PerformanceMeter
         {
-            get { return m_Physics.PerformanceMeter; }
+            get {                            
+                return m_Graphics.iDeltaLapTime / 1000.0f; 
+            }
         }
 
         public int[] TyreWear

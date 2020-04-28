@@ -107,15 +107,15 @@ namespace AC_Arduino
                 iTicks = 0;
             }
             if (iTicks == 19)
-            { 
-                WriteToPort(CarStatus.MessageType.TYRE_STATUS);              
+            {
+                // WriteToPort(CarStatus.MessageType.TYRE_STATUS);   // Not available in ACC            
                 WriteToPort(CarStatus.MessageType.FUEL);                
                 bSended = true;
             }
             if (iTicks == 17)
             {
                 // send less priority message;
-                WriteToPort(CarStatus.MessageType.TYRE_TEMP); 
+                // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
                 bSended = true;
             }
             if (iTicks == 15)
