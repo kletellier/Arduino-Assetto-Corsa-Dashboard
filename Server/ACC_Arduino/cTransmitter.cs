@@ -118,7 +118,7 @@ namespace AC_Arduino
                 // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
                 bSended = true;
             }
-            if (iTicks == 15)
+            if (iTicks == 5)
             {
                 WriteToPort(CarStatus.MessageType.PERFORMANCE_METER);
                 bSended = true;
