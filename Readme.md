@@ -2,7 +2,7 @@
 
 ## Arduino Assetto Corsa Dashboard
 
-  3 dashboards for Assetto Corsa
+  3 dashboards for Assetto Corsa and Assetto Corsa Competizione
 
   - With LCDKeypad (found on a chinese seller website)
   - With TFT 2.4" Shield (https://www.amazon.fr/gp/product/B0798N3JWD/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1)
@@ -14,6 +14,7 @@
   1 arduino wired on USB on the PC communicate with server within serial port 
 
   Display Speed,Gear,Fuel , Fuel estimated autonomy after 2 laps, best lap , last lap ( also performance meter in tmp1638)
+  For ACC no Tyre Wear and Tyre Temp
 
 ## Installation
 
