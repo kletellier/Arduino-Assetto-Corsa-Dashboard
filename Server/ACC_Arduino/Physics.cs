@@ -155,5 +155,21 @@ namespace AssettoCorsaSharedMemory
         public float[] SuspensionDamage;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] TyreTemp;
+        public float waterTemp;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] brakePressure;
+        public int frontBrakeCompound;
+        public int rearBrakeCompound;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] padLife;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] discLife;
+        public int ignitionOn;
+        public int starterEngineOn;
+        public int isEngineRunning;
+        public float kerbVibration;
+        public float slipVibrations;
+        public float gVibrations;
+        public float absVibrations;
     }
 }
