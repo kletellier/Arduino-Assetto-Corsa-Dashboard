@@ -168,6 +168,7 @@ namespace AssettoCorsaSharedMemory
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
         public String trackStatus;
         public int MissingMandatoryPits;
-        public float Clock;
+        public int directionLightsLeft;
+        public int directionLightsRight;
     }
 }
