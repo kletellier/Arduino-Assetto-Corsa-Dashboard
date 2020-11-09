@@ -167,6 +167,7 @@ namespace AssettoCorsaSharedMemory
         public float FuelEstimatedLaps;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
         public String trackStatus;
+        public float clock;
         public int MissingMandatoryPits;
         public int directionLightsLeft;
         public int directionLightsRight;
