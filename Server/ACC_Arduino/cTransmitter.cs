@@ -107,23 +107,18 @@ namespace AC_Arduino
                 iTicks = 0;
             }
             if (iTicks == 19)
-            {
-                // WriteToPort(CarStatus.MessageType.TYRE_STATUS);   // Not available in ACC            
+            {                      
                 WriteToPort(CarStatus.MessageType.FUEL);                
                 bSended = true;
             }
             if (iTicks == 17)
-            {
-                // send less priority message;
-                // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
+            {               
                 WriteToPort(CarStatus.MessageType.FUELXLAP);
                 WriteToPort(CarStatus.MessageType.FUEL_AUTONOMY);
                 bSended = true;
             }
             if (iTicks == 15)
-            {
-                // send less priority message;
-                // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
+            {               
                 WriteToPort(CarStatus.MessageType.TC);
                 WriteToPort(CarStatus.MessageType.ABS);
                 WriteToPort(CarStatus.MessageType.ENGINE_MAP);
@@ -131,7 +126,6 @@ namespace AC_Arduino
             }
             if (iTicks == 5)
             {
-                // WriteToPort(CarStatus.MessageType.PERFORMANCE_METER); // Not available in ACC
                 bSended = true;
             }            
             if (!bSended && (iTicks % 2 == 0))
@@ -140,7 +134,6 @@ namespace AC_Arduino
                 WriteToPort(CarStatus.MessageType.RPM);
                 WriteToPort(CarStatus.MessageType.SPEED);
                 WriteToPort(CarStatus.MessageType.RPM_TICK);
-                //WriteToPort(CarStatus.MessageType.CURRENT_TIME);
             }            
             
             StartTimer();
