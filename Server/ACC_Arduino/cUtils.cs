@@ -33,14 +33,16 @@ namespace AC_Arduino
 
             foreach (ManagementObject mObj in mReturn)
             {
-
-                if (mObj["Name"].ToString().ToLower().Contains("arduino") || mObj["Name"].ToString().ToLower().Contains("ch340"))
+                if(mObj["Name"] != null)
                 {
-                    Console.WriteLine("Serial port found : " + mObj["Name"].ToString());
-                    string[] sMots = mObj["Name"].ToString().Split(' ');
-                    string sPort = sMots[sMots.Length - 1].Replace("(", "").Replace(")", "");
-                    oCOMS.Add(sPort);
-                }
+                    if (mObj["Name"].ToString().ToLower().Contains("arduino") || mObj["Name"].ToString().ToLower().Contains("ch340"))
+                    {
+                        Console.WriteLine("Serial port found : " + mObj["Name"].ToString());
+                        string[] sMots = mObj["Name"].ToString().Split(' ');
+                        string sPort = sMots[sMots.Length - 1].Replace("(", "").Replace(")", "");
+                        oCOMS.Add(sPort);
+                    }
+                }                
             }
             return oCOMS;
         }

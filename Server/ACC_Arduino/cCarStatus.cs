@@ -35,7 +35,12 @@ namespace AC_Arduino
             CURRENT_TIME,
             FUEL_TICK,
             CURRENT_POSITION,
-            PERFORMANCE_METER
+            PERFORMANCE_METER,
+            FUELXLAP,
+            TC,
+            ABS,
+            ENGINE_MAP,
+            FUEL_AUTONOMY
         }
 
         public enum TyrePosition
@@ -187,6 +192,46 @@ namespace AC_Arduino
                     ret[i] = tmp;
                 }
                 return ret;
+            }
+        }
+
+        public float FuelXLap
+        {
+            get
+            {
+                return m_Graphics.FuelXLap;
+            }
+        }
+
+        public int TC
+        {
+            get
+            {
+                return m_Graphics.TC;
+            }
+        }
+
+        public int ABS
+        {
+            get
+            {
+                return m_Graphics.ABS;
+            }
+        }
+
+        public int Engine_Map
+        {
+            get
+            {
+                return m_Graphics.EngineMap;
+            }
+        }
+
+        public float FuelAutonomy
+        {
+            get
+            {
+                return m_Graphics.FuelEstimatedLaps;
             }
         }
 
@@ -360,6 +405,21 @@ namespace AC_Arduino
                         break;
                     case MessageType.PERFORMANCE_METER:
                         sRet = FormatMessage(pMessage, PerformanceMeter, "0.00").Replace(',', '.');
+                        break;
+                    case MessageType.FUELXLAP:
+                        sRet = FormatMessage(pMessage, FuelXLap, "0.00").Replace(',', '.');
+                        break;
+                    case MessageType.TC:
+                          sRet = FormatMessage(pMessage, TC);
+                        break;
+                    case MessageType.ABS:
+                        sRet = FormatMessage(pMessage, ABS);
+                        break;
+                    case MessageType.ENGINE_MAP:
+                        sRet = FormatMessage(pMessage, Engine_Map);
+                        break;
+                    case MessageType.FUEL_AUTONOMY:
+                        sRet = FormatMessage(pMessage, FuelAutonomy, "0.0").Replace(',', '.');
                         break;
                     default:
                         sRet = FormatMessage(MessageType.INIT, "");

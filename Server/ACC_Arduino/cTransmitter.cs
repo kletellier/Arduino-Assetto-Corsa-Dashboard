@@ -116,11 +116,22 @@ namespace AC_Arduino
             {
                 // send less priority message;
                 // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
+                WriteToPort(CarStatus.MessageType.FUELXLAP);
+                WriteToPort(CarStatus.MessageType.FUEL_AUTONOMY);
+                bSended = true;
+            }
+            if (iTicks == 15)
+            {
+                // send less priority message;
+                // WriteToPort(CarStatus.MessageType.TYRE_TEMP);  // Not available in ACC
+                WriteToPort(CarStatus.MessageType.TC);
+                WriteToPort(CarStatus.MessageType.ABS);
+                WriteToPort(CarStatus.MessageType.ENGINE_MAP);
                 bSended = true;
             }
             if (iTicks == 5)
             {
-                WriteToPort(CarStatus.MessageType.PERFORMANCE_METER);
+                // WriteToPort(CarStatus.MessageType.PERFORMANCE_METER); // Not available in ACC
                 bSended = true;
             }            
             if (!bSended && (iTicks % 2 == 0))
@@ -189,7 +200,7 @@ namespace AC_Arduino
         {
             iTicks = 0;
             bSendingAllowed = true;
-            Console.WriteLine("Initialize Assetto Corsa Competizione shared memorey component");
+            Console.WriteLine("Initialize Assetto Corsa Competizione shared memory component");
             pAc = new AssettoCorsa();
             pAc.StaticInfoUpdated += PAc_StaticInfoUpdated;
             pAc.PhysicsUpdated += PAc_PhysicsUpdated;
