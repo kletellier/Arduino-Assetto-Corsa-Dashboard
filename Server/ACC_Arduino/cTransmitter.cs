@@ -108,7 +108,8 @@ namespace AC_Arduino
             }
             if (iTicks == 19)
             {                      
-                WriteToPort(CarStatus.MessageType.FUEL);                
+                WriteToPort(CarStatus.MessageType.FUEL);
+                WriteToPort(CarStatus.MessageType.FLAG);
                 bSended = true;
             }
             if (iTicks == 17)

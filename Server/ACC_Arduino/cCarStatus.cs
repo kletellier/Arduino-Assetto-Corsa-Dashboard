@@ -40,7 +40,8 @@ namespace AC_Arduino
             TC,
             ABS,
             ENGINE_MAP,
-            FUEL_AUTONOMY
+            FUEL_AUTONOMY,
+            FLAG
         }
 
         public enum TyrePosition
@@ -235,6 +236,14 @@ namespace AC_Arduino
             }
         }
 
+        public AC_FLAG_TYPE Flag
+        {
+            get
+            {
+                return m_Graphics.Flag;
+            }
+        }
+
         public CarStatus()
         {            
             m_Graphics_Filled = false;
@@ -324,6 +333,12 @@ namespace AC_Arduino
         {
             string sValue = pValue.ToString(pFloatFormat);
             return String.Format(m_FormatMessage, MessageTypeToString(pMessage), sValue);
+        }
+
+        private string FormatMessage(MessageType pMessage, AC_FLAG_TYPE eValue)
+        {
+            int iValue = (int)eValue;
+            return String.Format(m_FormatMessage, MessageTypeToString(pMessage), Convert.ToString(iValue));            
         }
 
         public bool IsOk()
@@ -420,6 +435,9 @@ namespace AC_Arduino
                         break;
                     case MessageType.FUEL_AUTONOMY:
                         sRet = FormatMessage(pMessage, FuelAutonomy, "0.0").Replace(',', '.');
+                        break;
+                    case MessageType.FLAG:
+                        sRet = FormatMessage(pMessage, Flag);
                         break;
                     default:
                         sRet = FormatMessage(MessageType.INIT, "");

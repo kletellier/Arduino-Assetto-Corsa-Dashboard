@@ -15,7 +15,9 @@ namespace AssettoCorsaSharedMemory
         AC_BLACK_FLAG = 3,
         AC_WHITE_FLAG = 4,
         AC_CHECKERED_FLAG = 5,
-        AC_PENALTY_FLAG = 6
+        AC_PENALTY_FLAG = 6,
+        AC_GREEN_FLAG = 7,
+        AC_ORANGE_FLAG = 8
     }
 
     public enum AC_STATUS
