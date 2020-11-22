@@ -108,8 +108,7 @@ namespace AC_Arduino
             }
             if (iTicks == 19)
             {                      
-                WriteToPort(CarStatus.MessageType.FUEL);
-                WriteToPort(CarStatus.MessageType.FLAG);
+                WriteToPort(CarStatus.MessageType.FUEL);                 
                 bSended = true;
             }
             if (iTicks == 17)
@@ -127,6 +126,7 @@ namespace AC_Arduino
             }
             if (iTicks == 5)
             {
+                WriteToPort(CarStatus.MessageType.FLAG);
                 bSended = true;
             }            
             if (!bSended && (iTicks % 2 == 0))
@@ -147,10 +147,11 @@ namespace AC_Arduino
 
         private void WriteToPort(CarStatus.MessageType pType)
         {
+            string sMessage = pCarStatus.GetMessage(pType);
             // send data only if client required
-            if(bSendingAllowed)
-            {
-                string sMessage = pCarStatus.GetMessage(pType);
+            // Debug 22.11.2020 always send flag change
+            if (bSendingAllowed || pType == CarStatus.MessageType.FLAG)
+            {                
                 bool bSend = true;
                 if(oDicLasts.ContainsKey(pType))
                 {
