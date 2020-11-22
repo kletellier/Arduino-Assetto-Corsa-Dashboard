@@ -348,7 +348,7 @@ void DisplayMode1()
     
   }   
 
-  if(stDisplay.Flag!=0)
+  if(stDisplay.Flag!=0 && stLast.Flag!=stDisplay.Flag)
   {
     // Display Flag
     DisplayFlag(stDisplay.Flag);
