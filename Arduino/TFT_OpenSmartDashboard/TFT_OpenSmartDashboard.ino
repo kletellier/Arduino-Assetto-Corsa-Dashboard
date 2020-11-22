@@ -30,6 +30,7 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
+#define ORANGE  0xFD20
 
 #define ORANGE_TRIGGER  192
 #define RED_TRIGGER  256
@@ -54,7 +55,8 @@ typedef enum {
   TC,
   ABS,
   ENGINE_MAP,
-  FUEL_AUTONOMY
+  FUEL_AUTONOMY,
+  FLAG
 } MessageType;
 
 
@@ -73,6 +75,9 @@ typedef struct {
     String Lap;
     String Rpm;
     String Position;
+    int Flag;
+    String Consumption;
+    String Autonomy;
    } Display;
  
 
@@ -84,8 +89,11 @@ typedef struct {
   long LastTime;
   String Fuel;
   String Lap;
-   String Rpm;
-   String Position;
+  String Rpm;
+  String Position;
+  int Flag;
+  String Consumption;
+  String Autonomy;
 } LastDisplay;
  
   
@@ -97,12 +105,11 @@ int iLastPix = 0;
 int charWidth = 5;
 byte rotation = 3; 
 long diffLess;
-bool bForceDisplay = false;
+bool bForceDisplay = true;
 
  
-Display stDisplay = {0,"0","N",0,0,"0","","",""}; 
-LastDisplay stLast = {0,"0","N",0,0,"0","","",""};
- 
+Display stDisplay = {0,"0","N",0,0,"0","","","",0,"",""}; 
+LastDisplay stLast = {0,"0","N",0,0,"0","","","",0,"",""}; 
 
 OPENSMART_kbv tft; 
 
@@ -190,7 +197,15 @@ void ParseCommand(String pStr)
       stDisplay.BestTime = StringToLong(timeArray[0]);
       stDisplay.LastTime = StringToLong(timeArray[1]);
       break; 
-        
+    case FLAG: 
+      stDisplay.Flag = iValue.toInt();
+      break;
+    case FUELXLAP:
+      stDisplay.Consumption = iValue;
+      break;
+    case FUEL_AUTONOMY:
+      stDisplay.Autonomy = iValue;
+    break;
     default:
       break;
   }       
@@ -210,6 +225,7 @@ void RefreshDisplay()
 
   if(actual-lastRefresh>=50)
   {
+    // Send message to server to stop sending during refreshing display
     Serial.print("O"); 
     DisplayMode1();  
     // refresh display
@@ -218,7 +234,7 @@ void RefreshDisplay()
   long display = millis();
   long displaytime = display - actual;
   bForceDisplay = false;
-  
+  // enable server to send message again
   Serial.print("I");
 }
 
@@ -331,8 +347,53 @@ void DisplayMode1()
     
     
   }   
+
+  if(stDisplay.Flag!=0)
+  {
+    // Display Flag
+    DisplayFlag(stDisplay.Flag);
+    stLast.Flag = stDisplay.Flag;
+  }
+  
+  if(stLast.Flag!=0 && stDisplay.Flag==0)
+  {
+    // Remove Flag
+    DisplayFlag(stDisplay.Flag);
+  }
 }
- 
+
+void DisplayFlag(int iFlag)
+{
+  // define color
+  uint16_t iColor = BLACK; // empty flag
+  switch (iFlag)
+  {     
+   case 1:
+      iColor = BLUE;      
+   break;
+   case 2:
+    iColor = YELLOW;
+   break;     
+    case 4:
+    iColor = WHITE;
+   break;
+    case 0:
+    case 3:
+    case 5:
+    case 6:
+    iColor = BLACK;
+   break;
+   case 7: 
+    iColor = GREEN;
+   break;
+    case 8: 
+    iColor = ORANGE;
+   break;
+  default:
+    break;
+  }
+  tft.fillRect(321,0,79,80 ,iColor);
+}
 
 void DisplayBorders()
 {
