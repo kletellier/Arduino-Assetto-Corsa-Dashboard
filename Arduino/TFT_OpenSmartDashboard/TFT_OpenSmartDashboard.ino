@@ -223,7 +223,7 @@ void RefreshDisplay()
   long actual = millis();
   diffLess = actual - lastRefreshLess;
 
-  if(actual-lastRefresh>=50)
+  if(actual-lastRefresh>=90) //more time between refresh for less remanence
   {
     // Send message to server to stop sending during refreshing display
     Serial.print("O"); 
@@ -263,7 +263,9 @@ void DisplayMode1()
     stLast.Speed = stDisplay.Speed;
   }
 
-  if(bForceDisplay || stLast.Percent!=stDisplay.Percent)
+  int iDelta = abs(stDisplay.Percent - stLast.Percent);
+
+  if(bForceDisplay || (stLast.Percent!=stDisplay.Percent && iDelta>3))
   {      
     int iPix = (int) stDisplay.Percent * 3.2;       
       if(stLast.Percent>stDisplay.Percent)
@@ -351,19 +353,19 @@ void DisplayMode1()
   if(stDisplay.Flag!=0 && stLast.Flag!=stDisplay.Flag)
   {
     // Display Flag
-    DisplayFlag(stDisplay.Flag);
-    stLast.Flag = stDisplay.Flag;
+    DisplayFlag(stDisplay.Flag); 
   }
   
   if(stLast.Flag!=0 && stDisplay.Flag==0)
   {
     // Remove Flag
-    DisplayFlag(stDisplay.Flag);
+    DisplayFlag(stDisplay.Flag); 
   }
 }
 
 void DisplayFlag(int iFlag)
 {
+  stLast.Flag = iFlag;
   // define color
   uint16_t iColor = BLACK; // empty flag
   switch (iFlag)
