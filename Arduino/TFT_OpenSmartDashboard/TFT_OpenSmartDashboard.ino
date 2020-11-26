@@ -270,7 +270,7 @@ void DisplayMode1()
     int iPix = (int) stDisplay.Percent * 3.2;  
     bool bDisplayRed = (iPix>RED_TRIGGER);
     bool bDisplayOrange = (iPix>ORANGE_TRIGGER);
-    bool bDisplayOnlyGreen = ((!bDisplayOrange) && (!bDisplayRed))
+    bool bDisplayOnlyGreen = ((!bDisplayOrange) && (!bDisplayRed));
 
     // Case when RPM is under last displaying, draw black rectange on offset     
     if(stLast.Percent>stDisplay.Percent)
