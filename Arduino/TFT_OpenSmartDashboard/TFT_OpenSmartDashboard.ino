@@ -267,32 +267,35 @@ void DisplayMode1()
 
   if(bForceDisplay || (stLast.Percent!=stDisplay.Percent && iDelta>3))
   {      
-    int iPix = (int) stDisplay.Percent * 3.2;       
-      if(stLast.Percent>stDisplay.Percent)
-      {
-        // draw black offset
-        tft.fillRect(iPix,81,iLastPix-iPix,38,BLACK);
-      }
-      else
-      {
-        // draw green offset
-        tft.fillRect(iLastPix,81,iPix-iLastPix,38,GREEN);
-      }
-      
-     if(iPix>RED_TRIGGER)
-     {
-       tft.fillRect(RED_TRIGGER,81, iPix - RED_TRIGGER, 38,RED);
-       tft.fillRect(ORANGE_TRIGGER,81,RED_TRIGGER-ORANGE_TRIGGER,38,YELLOW);
-     }
-     else
-     {
-       if(iPix>ORANGE_TRIGGER)
+    int iPix = (int) stDisplay.Percent * 3.2;  
+    bool bDisplayRed = (iPix>RED_TRIGGER);
+    bool bDisplayOrange = (iPix>ORANGE_TRIGGER);
+    bool bDisplayOnlyGreen = ((!bDisplayOrange) && (!bDisplayRed))
+
+    // Case when RPM is under last displaying, draw black rectange on offset     
+    if(stLast.Percent>stDisplay.Percent)
+    {
+      // draw black offset
+      tft.fillRect(iPix,81,iLastPix-iPix,38,BLACK); // x,y,w,h,color
+    }
+
+    if(bDisplayOnlyGreen)
+    {
+        // Display only green (not reach orange trigger
+        tft.fillRect(0,81,iPix,38,GREEN);  
+    }
+    else
+    {
+       tft.fillRect(0,81, ORANGE_TRIGGER,38,GREEN);
+       if(bDisplayOrange)
        {
          tft.fillRect(ORANGE_TRIGGER,81,iPix - ORANGE_TRIGGER,38,YELLOW);
-       }              
-     }
-    int iGreen = (iPix > ORANGE_TRIGGER) ? ORANGE_TRIGGER : iPix;
-    tft.fillRect(0,81,iGreen,38,GREEN);     
+       }
+       if(bDisplayRed)
+       {
+         tft.fillRect(RED_TRIGGER,81, iPix - RED_TRIGGER, 38,RED);
+       }
+    }        
     
     iLastPix = iPix;
     stLast.Percent = stDisplay.Percent;      
