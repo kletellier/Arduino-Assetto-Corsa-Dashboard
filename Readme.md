@@ -7,6 +7,7 @@
   - With LCDKeypad (found on a chinese seller website)
   - With TFT 2.4" Shield (https://www.amazon.fr/gp/product/B0798N3JWD/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1)
   - With TM1638 display (https://www.amazon.fr/gp/product/B0797PLVTX/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1)
+  - With TFT 3.2" OpenSmart Shield (only on Assetto Corsa Competizione)
 
   2 parts :
 
@@ -20,6 +21,7 @@
 
 - Clone this repo on your server or download release
 - Copy Keypad folder in Arduino/Libraries in your Arduino libraries folder in your computer (only for LCDKeypad dashboard)
+- Copy MCUFRIEND_kbv folder in Arduino/Libraries in your Arduino libraries folder in your computer (only for TFT 3.2" dashboard)
 - Upload specific .ino file in your Arduino (tested with Uno R3)
 - Launch AC
 - Launch your server in Server\AC_Arduino\Bin (after compiling with vs2019 or vs2017 community edition)
