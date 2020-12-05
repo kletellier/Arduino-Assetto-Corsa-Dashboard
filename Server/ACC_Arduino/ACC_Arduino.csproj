@@ -58,6 +58,7 @@
   <ItemGroup>
     <None Include="ACCSharedMemoryDocumentationV1.3.10.pdf" />
     <None Include="ACCSharedMemoryDocumentationV1.5.pdf" />
+    <None Include="ACCSharedMemoryDocumentationV1.6.pdf" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
