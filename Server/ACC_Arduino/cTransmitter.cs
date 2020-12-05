@@ -106,6 +106,11 @@ namespace AC_Arduino
                 bSended = true;
                 iTicks = 0;
             }
+            if (iTicks == 21)
+            {
+                WriteToPort(CarStatus.MessageType.TYRE_PRESSURE);
+                bSended = true;
+            }
             if (iTicks == 19)
             {                      
                 WriteToPort(CarStatus.MessageType.FUEL);                 

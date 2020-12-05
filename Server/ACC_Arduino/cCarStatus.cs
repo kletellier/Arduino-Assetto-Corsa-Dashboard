@@ -41,7 +41,8 @@ namespace AC_Arduino
             ABS,
             ENGINE_MAP,
             FUEL_AUTONOMY,
-            FLAG
+            FLAG,
+            TYRE_PRESSURE
         }
 
         public enum TyrePosition
@@ -193,6 +194,13 @@ namespace AC_Arduino
                     ret[i] = tmp;
                 }
                 return ret;
+            }
+        }
+
+        public float[] TyrePressure
+        {
+            get { 
+                return m_Physics.WheelsPressure;
             }
         }
 
@@ -438,6 +446,17 @@ namespace AC_Arduino
                         break;
                     case MessageType.FLAG:
                         sRet = FormatMessage(pMessage, Flag);
+                        break;
+                    case MessageType.TYRE_PRESSURE:
+                        StringBuilder sbTp = new StringBuilder();
+                        int iTp = 0;
+                        foreach (float item in TyrePressure)
+                        {
+                            if (iTp > 0) { sbTp.Append(";"); }
+                            sbTp.Append(item.ToString("0.0"));
+                            iTp++;
+                        }
+                        sRet = FormatMessage(pMessage, sbTp.ToString());
                         break;
                     default:
                         sRet = FormatMessage(MessageType.INIT, "");
