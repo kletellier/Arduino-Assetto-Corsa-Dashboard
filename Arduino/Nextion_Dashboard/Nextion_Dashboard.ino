@@ -1,28 +1,27 @@
 // Specific for ACC 4.3 Nextion Screen works with Arduino Mega
 #include "EasyNextionLibrary.h" 
-
-typedef enum {
-  RPM,
-  RPM_TICK,
-  SPEED,
-  GEAR,
-  TYRE_STATUS,
-  TYRE_TEMP,
-  TIME,
-  INIT,
-  FUEL,
-  LAP,
-  CURRENT_TIME,
-  FUEL_TICK,
-  CURRENT_POSITION,
-  PERFORMANCE_METER,
-  FUELXLAP,
-  TC,
-  ABS,
-  ENGINE_MAP,
-  FUEL_AUTONOMY,
-  FLAG
-} MessageType;
+ 
+  const int RPM  = 0;
+  const int RPM_TICK  = 1;
+  const int SPEED  = 2;
+  const int GEAR  = 3;
+  const int TYRE_STATUS  = 4;
+  const int TYRE_TEMP  = 5;
+  const int TIME  = 6;
+  const int INIT  = 7;
+  const int FUEL  = 8;
+  const int LAP  = 9;
+  const int CURRENT_TIME  = 10;
+  const int FUEL_TICK = 11;
+  const int CURRENT_POSITION =  12;
+  const int PERFORMANCE_METER  = 13;
+  const int FUELXLAP  = 14;
+  const int TCTRL  = 15;
+  const int ABRS  = 16;
+  const int ENGINE_MAP =  17;
+  const int FUEL_AUTONOMY =  18;
+  const int FLAG =  19;
+  const int TYRE_PRESSURE =  20;
 
 
 typedef struct {
@@ -34,8 +33,8 @@ typedef struct {
     int Percent;
     String Speed;
     String Gear;
-    long BestTime;
-    long LastTime;
+    String BestTime;
+    String LastTime;
     String Fuel;
     String Lap;
     String Rpm;
@@ -43,6 +42,13 @@ typedef struct {
     int Flag;
     String Consumption;
     String Autonomy;
+    String ABS;
+    String TC;
+    String EM;
+    String FrontLeft_Pressure ;
+    String FrontRight_Pressure;
+    String RearLeft_Pressure ;
+    String RearRight_Pressure ;
    } Display;
  
 
@@ -50,8 +56,8 @@ typedef struct {
   int Percent;
   String Speed;
   String Gear;
-  long BestTime;
-  long LastTime;
+  String BestTime;
+  String LastTime;
   String Fuel;
   String Lap;
   String Rpm;
@@ -59,6 +65,13 @@ typedef struct {
   int Flag;
   String Consumption;
   String Autonomy;
+  String ABS;
+  String TC;
+  String EM;
+  String FrontLeft_Pressure;
+  String FrontRight_Pressure;
+  String RearLeft_Pressure;
+  String RearRight_Pressure;
 } LastDisplay;
  
   
@@ -71,11 +84,12 @@ int charWidth = 5;
 long diffLess;
 bool bForceDisplay = true;
 int REFRESH_TIME = 100;
+bool bSending = true;
 
 EasyNex myNex(Serial2); // Serial2 for Mega2560
 
-Display stDisplay = {0,"0","N",0,0,"0","","","",0,"",""}; 
-LastDisplay stLast = {0,"0","N",0,0,"0","","","",0,"",""}; 
+Display stDisplay = {0,"0","N","","","0","","","",0,"","","","","","","","",""}; 
+LastDisplay stLast = {0,"0","N","","","0","","","",0,"","","","","","","","",""}; 
  
 void setup(void) {
   Serial.begin(115200);   
@@ -123,77 +137,241 @@ void ParseCommand(String pStr)
   switch (cmd.Command.toInt())
   {
     case RPM:
+      {
       stDisplay.Rpm = iValue;
       break;
+      }
     case RPM_TICK:
+      {
       stDisplay.Percent = iValue.toInt();
       break;
+      }
     case SPEED:
+      {
       stDisplay.Speed = iValue;
       break;
+      }
     case GEAR:
+      {
       stDisplay.Gear = iValue;
       break;  
-    case FUEL:
-      stDisplay.Fuel = iValue;      
-    case FUEL_TICK:
-      stDisplay.Percent = iValue.toInt();
-      break; 
-    case CURRENT_POSITION:
-      stDisplay.Position = iValue;
-      break; 
+      } 
+    case TIME:
+    {
+      char *timeArray[2];
+      char bufbt[25] = "";
+      char buflt[25] = "";
+      SplitToArray(iValue,timeArray);
+      FormatTime(bufbt,StringToLong(timeArray[0]));
+      FormatTime(buflt,StringToLong(timeArray[1]));
+      stDisplay.BestTime = bufbt;
+      stDisplay.LastTime = buflt; 
+      break;
+    }    
+    case FUEL: 
+    {    
+      stDisplay.Fuel = iValue;  
+      break;
+    }
     case LAP:
+    {
       stDisplay.Lap = iValue;
       if(iLap!=iValue.toInt())
       {          
         iLap = iValue.toInt(); 
       }
-      break;
-    case TIME:
-      char *timeArray[2];
-      SplitToArray(iValue,timeArray);
-      stDisplay.BestTime = StringToLong(timeArray[0]);
-      stDisplay.LastTime = StringToLong(timeArray[1]);
       break; 
+    } 
+   
+    case FUEL_TICK:
+    {
+      stDisplay.Percent = iValue.toInt();
+      break; 
+    }
+    case CURRENT_POSITION:
+    {
+      stDisplay.Position = iValue;
+      break; 
+    }     
+    case FUELXLAP:
+    {
+      stDisplay.Consumption = iValue;
+      break;    
+    }
+    case TCTRL:
+    { 
+     stDisplay.TC = iValue;
+     break;
+    }
+    case ABRS:
+    {
+     stDisplay.ABS = iValue;
+     break;    
+    }
+    case ENGINE_MAP: 
+    {
+     stDisplay.EM = iValue;
+     break;
+    }
+    case FUEL_AUTONOMY:
+    {
+      stDisplay.Autonomy = iValue;
+      break;
+    }
     case FLAG: 
+    {
       stDisplay.Flag = iValue.toInt();
       break;
-    case FUELXLAP:
-      stDisplay.Consumption = iValue;
-      break;
-    case FUEL_AUTONOMY:
-      stDisplay.Autonomy = iValue;
-    break;
+    }
+    case TYRE_PRESSURE:
+    {
+      char *pressureArray[4];
+      SplitToArray(iValue,pressureArray);
+      stDisplay.FrontLeft_Pressure = pressureArray[0]; 
+      stDisplay.FrontRight_Pressure = pressureArray[1]; 
+      stDisplay.RearLeft_Pressure = pressureArray[2]; 
+      stDisplay.RearRight_Pressure = pressureArray[3];    
+     break; 
+    }
     default:
       break;
-  }       
+  }    
 }
  
 
 void RefreshDisplay()
 {
   long actual = millis();
-  diffLess = actual - lastRefreshLess;
-
+  
   if(actual-lastRefresh>=REFRESH_TIME) //more time between refresh for less remanence
   {
     // Send message to server to stop sending during refreshing display
     Serial.print("O"); 
+    bSending = false;
     DisplayScreen();  
     // refresh display
     lastRefresh = actual;     
-  }  
-  long display = millis();
-  long displaytime = display - actual;
+  }    
   bForceDisplay = false;
   // enable server to send message again
-  Serial.print("I");
+  if(!bSending) { Serial.print("I"); bSending = true; }
 }
 
 void DisplayScreen()
 {
-   
-    
+  if(stDisplay.Speed!=stLast.Speed)
+  {
+    myNex.writeStr("speed.txt", stDisplay.Speed);
+    stLast.Speed = stDisplay.Speed;
+  }
+  if(stDisplay.Gear!=stLast.Gear)
+  {
+    myNex.writeStr("gear.txt", stDisplay.Gear);
+    stLast.Gear = stDisplay.Gear;
+  }
+  if(stDisplay.Rpm!=stLast.Rpm)
+  {
+    myNex.writeStr("rpm.txt", stDisplay.Rpm); 
+    stLast.Rpm = stDisplay.Rpm;
+  }
+  if(stDisplay.Fuel!=stLast.Fuel)
+  {
+    myNex.writeStr("fuell.txt", stDisplay.Fuel); 
+    stLast.Fuel = stDisplay.Fuel;
+  }
+  if(stDisplay.Autonomy!=stLast.Autonomy)
+  {
+    myNex.writeStr("fuela.txt", stDisplay.Autonomy); 
+    stLast.Autonomy = stDisplay.Autonomy;
+  }
+  if(stDisplay.TC!=stLast.TC)
+  {
+    myNex.writeStr("tc.txt", stDisplay.TC); 
+    stLast.TC = stDisplay.TC;
+  }
+  if(stDisplay.ABS!=stLast.ABS)
+  {
+    myNex.writeStr("abs.txt", stDisplay.ABS); 
+    stLast.ABS = stDisplay.ABS;
+  }
+  if(stDisplay.EM!=stLast.EM)
+  {
+    myNex.writeStr("em.txt", stDisplay.EM); 
+    stLast.EM = stDisplay.EM;
+  }
+  if(stDisplay.LastTime!=stLast.LastTime)
+  {
+    myNex.writeStr("laptime.txt", stDisplay.LastTime); 
+    stLast.LastTime = stDisplay.LastTime;
+  }
+
+  if(stDisplay.FrontLeft_Pressure!=stLast.FrontLeft_Pressure)
+  {
+    myNex.writeStr("flp.txt", stDisplay.FrontLeft_Pressure); 
+    stLast.FrontLeft_Pressure = stDisplay.FrontLeft_Pressure;
+  }
+  if(stDisplay.FrontRight_Pressure!=stLast.FrontRight_Pressure)
+  {
+    myNex.writeStr("frp.txt", stDisplay.FrontRight_Pressure); 
+    stLast.FrontRight_Pressure = stDisplay.FrontRight_Pressure;
+  }
+  if(stDisplay.RearLeft_Pressure!=stLast.RearLeft_Pressure)
+  {
+    myNex.writeStr("rlp.txt", stDisplay.RearLeft_Pressure); 
+    stLast.RearLeft_Pressure = stDisplay.RearLeft_Pressure;
+  }
+  if(stDisplay.RearRight_Pressure!=stLast.RearRight_Pressure)
+  {
+    myNex.writeStr("rrp.txt", stDisplay.RearRight_Pressure); 
+    stLast.RearRight_Pressure = stDisplay.RearRight_Pressure;
+  }
+  /*
+  if(stDisplay.Flag!=0 && stLast.Flag!=stDisplay.Flag)
+  {
+    // Display Flag
+    DisplayFlag(stDisplay.Flag); 
+  }
+  
+  if(stLast.Flag!=0 && stDisplay.Flag==0)
+  {
+    // Remove Flag
+    DisplayFlag(stDisplay.Flag); 
+  }  */
+}
+
+
+void DisplayFlag(int iFlag)
+{
+  stLast.Flag = iFlag;
+  // define color
+  uint32_t iColor = 0; // empty flag
+  switch (iFlag)
+  {     
+   case 1:
+      iColor = 31;      
+   break;
+   case 2:
+    iColor = 65504;
+   break;     
+    case 4:
+    iColor = 65535;
+   break;
+    case 0:
+    case 3:
+    case 5:
+    case 6:
+    iColor = 0;
+   break;
+   case 7: 
+    iColor = 2016;
+   break;
+    case 8: 
+    iColor = 64800;
+   break;
+  default:
+    break;
+  } 
+  myNex.writeNum("flag.bco", iColor);
 }
   
 
