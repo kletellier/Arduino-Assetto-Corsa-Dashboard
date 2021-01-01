@@ -23,6 +23,11 @@
   const int FLAG =  19;
   const int TYRE_PRESSURE =  20;
 
+  const int COLOR_YELLOW = 2;
+  const int COLOR_ORANGE = 3;
+  const int COLOR_GREEN = 4;
+  const int COLOR_BLACK = 1;
+
 
 typedef struct {
   String Command;
@@ -85,6 +90,7 @@ long diffLess;
 bool bForceDisplay = true;
 int REFRESH_TIME = 100;
 bool bSending = true;
+bool bNewCommand = false;
 
 EasyNex myNex(Serial2); // Serial2 for Mega2560
 
@@ -236,6 +242,7 @@ void ParseCommand(String pStr)
     default:
       break;
   }    
+  bNewCommand = true;
 }
  
 
@@ -247,6 +254,7 @@ void RefreshDisplay()
   {
     // Send message to server to stop sending during refreshing display
     Serial.print("O"); 
+    bNewCommand = false;
     bSending = false;
     DisplayScreen();  
     // refresh display
@@ -325,7 +333,10 @@ void DisplayScreen()
     myNex.writeStr("rrp.txt", stDisplay.RearRight_Pressure); 
     stLast.RearRight_Pressure = stDisplay.RearRight_Pressure;
   }
-  /*
+
+  // Display led rpm
+  DisplayProgressBar();
+   
   if(stDisplay.Flag!=0 && stLast.Flag!=stDisplay.Flag)
   {
     // Display Flag
@@ -336,7 +347,28 @@ void DisplayScreen()
   {
     // Remove Flag
     DisplayFlag(stDisplay.Flag); 
-  }  */
+  }  
+}
+
+void DisplayProgressBar()
+{
+  // progressbar since 50 %
+  float fPercent = (float)stDisplay.Percent * 1.0;
+  float fNum = fPercent - 50.0; 
+  if( fNum < 0.0 ){ fNum=0.0; }
+  float fLedsIncr = 50.0 / 8.0;
+  float fLeds = fNum / fLedsIncr;
+  int iLeds = (int) floor(fLeds);
+
+  if(iLeds>=1){myNex.writeNum("p2.pic",COLOR_GREEN);} else {myNex.writeNum("p2.pic",COLOR_BLACK);}
+  if(iLeds>=2){myNex.writeNum("p3.pic",COLOR_GREEN);} else {myNex.writeNum("p3.pic",COLOR_BLACK);}
+  if(iLeds>=3){myNex.writeNum("p4.pic",COLOR_GREEN);} else {myNex.writeNum("p4.pic",COLOR_BLACK);}
+  if(iLeds>=4){myNex.writeNum("p5.pic",COLOR_GREEN);} else {myNex.writeNum("p5.pic",COLOR_BLACK);}
+  if(iLeds>=5){myNex.writeNum("p6.pic",COLOR_YELLOW);} else {myNex.writeNum("p6.pic",COLOR_BLACK);}
+  if(iLeds>=6){myNex.writeNum("p7.pic",COLOR_YELLOW);} else {myNex.writeNum("p7.pic",COLOR_BLACK);}
+  if(iLeds>=7){myNex.writeNum("p8.pic",COLOR_YELLOW);} else {myNex.writeNum("p8.pic",COLOR_BLACK);}
+  if(iLeds>=8){myNex.writeNum("p9.pic",COLOR_ORANGE);} else {myNex.writeNum("p9.pic",COLOR_BLACK);}
+   
 }
 
 
@@ -348,26 +380,37 @@ void DisplayFlag(int iFlag)
   switch (iFlag)
   {     
    case 1:
+   {
       iColor = 31;      
    break;
+   }
    case 2:
+    { 
     iColor = 65504;
-   break;     
+   break; 
+    }    
     case 4:
+    {
     iColor = 65535;
-   break;
+   break;}
     case 0:
     case 3:
     case 5:
     case 6:
+    {
     iColor = 0;
    break;
+   }
    case 7: 
+   {
     iColor = 2016;
    break;
+   }
     case 8: 
+    {
     iColor = 64800;
    break;
+    }
   default:
     break;
   } 
