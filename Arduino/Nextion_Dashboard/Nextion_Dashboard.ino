@@ -91,6 +91,7 @@ bool bForceDisplay = true;
 int REFRESH_TIME = 100;
 bool bSending = true;
 bool bNewCommand = false;
+int iLastLed = 0;
 
 EasyNex myNex(Serial2); // Serial2 for Mega2560
 
@@ -100,6 +101,15 @@ LastDisplay stLast = {0,"0","N","","","0","","","",0,"","","","","","","","",""}
 void setup(void) {
   Serial.begin(115200);   
   myNex.begin(9600);
+
+  myNex.writeNum("p2.pic",COLOR_BLACK);
+  myNex.writeNum("p3.pic",COLOR_BLACK);
+  myNex.writeNum("p4.pic",COLOR_BLACK);
+  myNex.writeNum("p5.pic",COLOR_BLACK);
+  myNex.writeNum("p6.pic",COLOR_BLACK);
+  myNex.writeNum("p7.pic",COLOR_BLACK);
+  myNex.writeNum("p8.pic",COLOR_BLACK);
+  myNex.writeNum("p9.pic",COLOR_BLACK);
 }
 
 void loop()
@@ -360,14 +370,29 @@ void DisplayProgressBar()
   float fLeds = fNum / fLedsIncr;
   int iLeds = (int) floor(fLeds);
 
-  if(iLeds>=1){myNex.writeNum("p2.pic",COLOR_GREEN);} else {myNex.writeNum("p2.pic",COLOR_BLACK);}
-  if(iLeds>=2){myNex.writeNum("p3.pic",COLOR_GREEN);} else {myNex.writeNum("p3.pic",COLOR_BLACK);}
-  if(iLeds>=3){myNex.writeNum("p4.pic",COLOR_GREEN);} else {myNex.writeNum("p4.pic",COLOR_BLACK);}
-  if(iLeds>=4){myNex.writeNum("p5.pic",COLOR_GREEN);} else {myNex.writeNum("p5.pic",COLOR_BLACK);}
-  if(iLeds>=5){myNex.writeNum("p6.pic",COLOR_YELLOW);} else {myNex.writeNum("p6.pic",COLOR_BLACK);}
-  if(iLeds>=6){myNex.writeNum("p7.pic",COLOR_YELLOW);} else {myNex.writeNum("p7.pic",COLOR_BLACK);}
-  if(iLeds>=7){myNex.writeNum("p8.pic",COLOR_YELLOW);} else {myNex.writeNum("p8.pic",COLOR_BLACK);}
-  if(iLeds>=8){myNex.writeNum("p9.pic",COLOR_ORANGE);} else {myNex.writeNum("p9.pic",COLOR_BLACK);}
+  if(iLastLed!=iLeds)
+  {
+    int iMinLed = 9;
+    int iMaxLed = 0;
+
+    if(iLeds<iMinLed) { iMinLed = iLeds; }
+    if(iLastLed<iMinLed) { iMinLed = iLastLed; }
+
+    if(iLeds>iMaxLed) { iMaxLed = iLeds;}
+    if(iLastLed>iMaxLed) { iMaxLed = iLastLed;}
+
+    if(iMinLed<=1 && iMaxLed>=1)  {if(iLeds>=1){myNex.writeNum("p2.pic",COLOR_GREEN);} else {myNex.writeNum("p2.pic",COLOR_BLACK);} }
+    if(iMinLed<=2 && iMaxLed>=2)  {if(iLeds>=2){myNex.writeNum("p3.pic",COLOR_GREEN);} else {myNex.writeNum("p3.pic",COLOR_BLACK);} }
+    if(iMinLed<=3 && iMaxLed>=3)  {if(iLeds>=3){myNex.writeNum("p4.pic",COLOR_GREEN);} else {myNex.writeNum("p4.pic",COLOR_BLACK);} }
+    if(iMinLed<=4 && iMaxLed>=4)  {if(iLeds>=4){myNex.writeNum("p5.pic",COLOR_GREEN);} else {myNex.writeNum("p5.pic",COLOR_BLACK);} }
+    if(iMinLed<=5 && iMaxLed>=5)  {if(iLeds>=5){myNex.writeNum("p6.pic",COLOR_YELLOW);} else {myNex.writeNum("p6.pic",COLOR_BLACK);} }
+    if(iMinLed<=6 && iMaxLed>=6)  {if(iLeds>=6){myNex.writeNum("p7.pic",COLOR_YELLOW);} else {myNex.writeNum("p7.pic",COLOR_BLACK);} }
+    if(iMinLed<=7 && iMaxLed>=7)  {if(iLeds>=7){myNex.writeNum("p8.pic",COLOR_YELLOW);} else {myNex.writeNum("p8.pic",COLOR_BLACK);} }
+    if(iMinLed<=8 && iMaxLed>=8)  {if(iLeds>=8){myNex.writeNum("p9.pic",COLOR_ORANGE);} else {myNex.writeNum("p9.pic",COLOR_BLACK);} }
+  }
+
+  iLastLed = iLeds;
+  
    
 }
 
